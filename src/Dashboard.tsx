@@ -1,13 +1,10 @@
-import {BrowserRouter, Redirect, Route} from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 import React from 'react'
 import {BasicLayout} from './views'
 
 const Dashboard = () => (
   <BrowserRouter>
-    <Route path='/dashboard' component={BasicLayout} />
-    <Route path='/*'>
-      <Redirect to='/dashboard' />
-    </Route>
+    <Route path='*' component={BasicLayout} />
   </BrowserRouter>
 )
 
