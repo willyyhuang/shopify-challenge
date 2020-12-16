@@ -2,9 +2,13 @@ import {Card, Typography, Row} from 'antd'
 import React from 'react'
 import {MovieType} from '../../views/BasicLayout'
 
+type NominationBannerPropType = {
+  nomination: MovieType[]
+}
+
 const NominationBanner = ({
     nomination,
-}: any) => <Card>
+}: NominationBannerPropType) => <Card>
   <Typography.Title level={4}>Your movie nominations :)</Typography.Title>
   {nomination.map((item: MovieType) => <Row style={{marginTop: 5}}>
     <Typography.Text style={{marginTop: 5}}>
