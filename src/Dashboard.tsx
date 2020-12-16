@@ -9,7 +9,7 @@ const Dashboard = () => (
       <Redirect to='/dashboard' />
     </Route>
   </BrowserRouter>
-  )
+)
 
 Dashboard.displayName = 'Dashboard'
 export default Dashboard
