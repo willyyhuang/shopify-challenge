@@ -12,16 +12,22 @@ const movies = produce(
     switch (type) {
       case 'SET_SEARCH_VALUE':
         state.searchValue = payload
-        break
+        return state
       case 'ADD_RESULT':
         state.result.push(payload)
-        break
+        return state
       case 'ADD_NOMINATION':
         state.nomination.push(payload)
-        break
+        return state
       case 'REMOVE_NOMINATION':
         state.nomination = state.nomination.filter((movie: any) => movie.Title !== payload.Title)
-        break
+        return state
+      case 'SET_MOVIES_STATE':
+        state = payload
+        return state
+      case 'RESET_STATE':
+        state = initialState
+        return state
       default:
         return state
     }

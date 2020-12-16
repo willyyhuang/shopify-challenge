@@ -1,7 +1,9 @@
-import {Col, Row} from 'antd'
+import {Col, message, Row} from 'antd'
 import {connect} from 'react-redux'
-import React from 'react'
-import {MovieSearchFormCard, NominationCard, ResultCard} from '../components'
+import React, {useEffect} from 'react'
+import {
+  MovieSearchFormCard, NominationBanner, NominationCard, ResultCard,
+} from '../components'
 import {searchMovie} from '../services'
 
 export type MovieType = {
@@ -21,7 +23,7 @@ type StoreStateType = {
 
 type DispatchArgType = {
   type: string,
-  payload: any,
+  payload?: any,
 }
 
 type BasicLayoutPropType = {
@@ -30,6 +32,22 @@ type BasicLayoutPropType = {
 }
 
 const BasicLayout = ({dispatch, movies}: BasicLayoutPropType) => {
+    useEffect(() => {
+      const sessionConfig = window.sessionStorage.getItem('movies')
+      if (sessionConfig) {
+        dispatch({
+          type: 'SET_MOVIES_STATE',
+          payload: JSON.parse(sessionConfig),
+        })
+      } else {
+        dispatch({type: 'RESET_STATE'})
+      }
+    }, [])
+
+    useEffect(() => {
+      window.sessionStorage.setItem('movies', JSON.stringify(movies))
+    }, [movies])
+
     const {result, nomination, searchValue} = movies
     const addNomination = (movie: MovieType) => {
         dispatch({type: 'ADD_NOMINATION', payload: movie})
@@ -46,7 +64,13 @@ const BasicLayout = ({dispatch, movies}: BasicLayoutPropType) => {
             Title: data.Title,
             Year: data.Year,
           }
-          dispatch({type: 'ADD_RESULT', payload})
+          const sameResult = result.filter((item: MovieType) => item.Title === data.Title)
+          if (sameResult.length === 0) {
+            dispatch({type: 'ADD_RESULT', payload})
+          }
+        }
+        if (data.Response === 'False') {
+          message.warning('Movie not found.')
         }
       })
     }
@@ -65,13 +89,18 @@ const BasicLayout = ({dispatch, movies}: BasicLayoutPropType) => {
         </Row>
         <Row style={{marginTop: 10}}>
           <Col span={11}>
-            <ResultCard result={result} addNomination={addNomination} />
+            <ResultCard nomination={nomination} result={result} addNomination={addNomination} />
           </Col>
           <Col span={2} />
           <Col span={11}>
             <NominationCard removeNomination={removeNomination} nomination={nomination} />
           </Col>
         </Row>
+        {nomination.length === 5 && <Row style={{marginTop: 10}}>
+          <Col span={24}>
+            <NominationBanner nomination={nomination} />
+          </Col>
+          </Row>}
       </Col>
       <Col span={6} />
     </Row>)
