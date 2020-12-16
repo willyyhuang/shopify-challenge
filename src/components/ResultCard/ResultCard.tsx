@@ -29,7 +29,7 @@ const ResultCard = ({
       <Typography.Title level={4}>Results</Typography.Title>
       {result.map((item: MovieType) => <Row style={{marginTop: 5}}>
         <Typography.Text style={{marginTop: 5}}>
-          {`${item.Title} - (${item.Year})`}
+          {`${item.Title} (${item.Year})`}
         </Typography.Text>
         <Button disabled={getItemDisabledState(item)} onClick={() => addNomination(item)} style={{marginLeft: 10}}>Nominate</Button>
       </Row>)}

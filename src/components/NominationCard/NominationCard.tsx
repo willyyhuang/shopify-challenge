@@ -18,7 +18,7 @@ const NominationCard = ({
       <Typography.Title level={4}>Nominations</Typography.Title>
       {nomination.map((item: MovieType) => <Row style={{marginTop: 5}}>
         <Typography.Text style={{marginTop: 5}}>
-          {`${item.Title} - (${item.Year})`}
+          {`${item.Title} (${item.Year})`}
         </Typography.Text>
         <Button onClick={() => removeNomination(item)} style={{marginLeft: 10}}>Remove</Button>
       </Row>)}
