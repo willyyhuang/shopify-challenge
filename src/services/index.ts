@@ -6,8 +6,8 @@ export async function searchMovie(payload: string) {
         method: 'GET',
         url: 'https://www.omdbapi.com/',
         params: {
-            apiKey: appConfig.OMDbApiKey,
             t: payload,
+            apikey: appConfig.OMDbApiKey,
         },
     })
 }
