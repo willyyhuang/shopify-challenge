@@ -1,4 +1,5 @@
 import produce from 'immer'
+import {MovieType} from '../views/BasicLayout'
 
 const initialState = {
   result: [],
@@ -20,7 +21,7 @@ const movies = produce(
         state.nomination.push(payload)
         return state
       case 'REMOVE_NOMINATION':
-        state.nomination = state.nomination.filter((movie: any) => movie.Title !== payload.Title)
+        state.nomination = state.nomination.filter((movie: MovieType) => movie.Title !== payload.Title)
         return state
       case 'SET_MOVIES_STATE':
         state = payload
