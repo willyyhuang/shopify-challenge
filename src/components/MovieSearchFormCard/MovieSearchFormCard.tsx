@@ -1,32 +1,25 @@
 import React from 'react'
-import {
-    Card, Form, Input,
-    } from 'antd'
-    import {SearchOutlined} from '@ant-design/icons'
-    import {searchMovie} from '../../services'
+import {Card, Form, Input} from 'antd'
+import {SearchOutlined} from '@ant-design/icons'
+
+type MovieSearchFormCardPropType = {
+  setSearchValue: (value: string) => void,
+  search: () => void,
+  searchValue: string,
+}
 
 const MovieSearchFormCard = ({
-    dispatch,
-    movies,
-}: any) =>
+  setSearchValue,
+  search,
+  searchValue,
+}: MovieSearchFormCardPropType) =>
     (
       <Card title='The Shoppies'>
         <Form.Item label='Movie title'>
           <Input
-            value={movies.searchValue}
-            onChange={(e) => dispatch({type: 'SET_SEARCH_VALUE', payload: e.target.value})}
-            onPressEnter={() => {
-              searchMovie(movies.searchValue).then((response: any) => {
-                  const {data} = response
-                  if (data.Response === 'True') {
-                    const payload = {
-                      Title: data.Title,
-                      Year: data.Year,
-                    }
-                    dispatch({type: 'ADD_RESULT', payload})
-                  }
-                })
-            }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onPressEnter={() => search()}
             suffix={<SearchOutlined />}
             placeholder='search a movie title' />
         </Form.Item>

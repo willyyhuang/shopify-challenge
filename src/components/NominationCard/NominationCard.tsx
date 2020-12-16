@@ -1,16 +1,22 @@
-import React from 'react'
 import {
-Button, Card, Row, Typography,
+  Button, Card, Row, Typography,
 } from 'antd'
+import React from 'react'
+import {MovieType} from '../../views/BasicLayout'
+
+type ResultCardPropType = {
+  nomination: MovieType[],
+  removeNomination: (payload: MovieType) => void,
+}
 
 const NominationCard = ({
     removeNomination,
     nomination,
-}: any) => {
+}: ResultCardPropType) => {
     if (nomination.length === 0) return null
     return <Card>
       <Typography.Title level={4}>Nominations</Typography.Title>
-      {nomination.map((item: any) => <Row style={{marginTop: 5}}>
+      {nomination.map((item: MovieType) => <Row style={{marginTop: 5}}>
         <Typography.Text style={{marginTop: 5}}>
           {`${item.Title} - (${item.Year})`}
         </Typography.Text>

@@ -1,17 +1,58 @@
-import React from 'react'
-import {
-    Col, Row,
-} from 'antd'
+import {Col, Row} from 'antd'
 import {connect} from 'react-redux'
+import React from 'react'
 import {MovieSearchFormCard, NominationCard, ResultCard} from '../components'
+import {searchMovie} from '../services'
 
-const BasicLayout = ({dispatch, movies}: any) => {
-    const {result, nomination} = movies
-    const addNomination = (movie: any) => {
+export type MovieType = {
+  Title: string,
+  Year: string,
+}
+
+type MovieStateType = {
+  result: MovieType[],
+  nomination: MovieType[],
+  searchValue: string,
+}
+
+type StoreStateType = {
+  movies: MovieStateType
+}
+
+type DispatchArgType = {
+  type: string,
+  payload: any,
+}
+
+type BasicLayoutPropType = {
+  dispatch: (arg: DispatchArgType) => void,
+  movies: MovieStateType,
+}
+
+const BasicLayout = ({dispatch, movies}: BasicLayoutPropType) => {
+    const {result, nomination, searchValue} = movies
+    const addNomination = (movie: MovieType) => {
         dispatch({type: 'ADD_NOMINATION', payload: movie})
     }
-    const removeNomination = (movie: any) => {
+    const removeNomination = (movie: MovieType) => {
         dispatch({type: 'REMOVE_NOMINATION', payload: movie})
+    }
+
+    const search = () => {
+      searchMovie(searchValue).then((response: any) => {
+        const {data} = response
+        if (data.Response === 'True') {
+          const payload = {
+            Title: data.Title,
+            Year: data.Year,
+          }
+          dispatch({type: 'ADD_RESULT', payload})
+        }
+      })
+    }
+
+    const setSearchValue = (value: string) => {
+      dispatch({type: 'SET_SEARCH_VALUE', payload: value})
     }
 
     return (<Row>
@@ -19,7 +60,7 @@ const BasicLayout = ({dispatch, movies}: any) => {
       <Col span={12} style={{marginTop: '10%'}}>
         <Row>
           <Col span={24}>
-            <MovieSearchFormCard dispatch={dispatch} movies={movies} />
+            <MovieSearchFormCard setSearchValue={setSearchValue} search={search} searchValue={searchValue} />
           </Col>
         </Row>
         <Row style={{marginTop: 10}}>
@@ -36,7 +77,7 @@ const BasicLayout = ({dispatch, movies}: any) => {
     </Row>)
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: StoreStateType) => ({
     movies: state.movies,
 })
 
